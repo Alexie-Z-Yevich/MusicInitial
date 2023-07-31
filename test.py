@@ -1,42 +1,82 @@
-import pydub
+import os
+import wave
+import time
+import random
+from pydub import AudioSegment
+import librosa
+import torch
 
+# 读取.wav文件
+def read_wav_file(filename):
+    with wave.open(filename, 'rb') as wav:
+        params = wav.getparams()
+        frames = wav.readframes(params.nframes)
+    return params, frames
 
-def convert_mp3_to_wav(mp3_file):
-    # 打开MP3文件
-    audio = pydub.AudioSegment.from_mp3(mp3_file)
+# 预测节拍
+def predict_beat(params, frames):
+    # 在这里实现节拍预测的算法，返回节拍信息，比如4/4拍、3/4拍
 
-    # 转换为WAV格式
-    wav_file = mp3_file.replace(".mp3", ".wav")
-    audio.export(wav_file, format="wav")
+    # 这里只是一个示例，随机返回4/4拍或3/4拍
+    return random.choice(['4/4', '3/4'])
 
-    return wav_file
+# 匹配最优的音符
+def match_chord(beat):
+    chord_files = os.listdir('./music/chord')
+    best_chord = None
+    best_score = float('-inf')
+    for file in chord_files:
+        chord = file[:-4]  # 去除后缀名
+        # 在这里使用机器学习/gpt2模型通过遍历的方式，匹配并评估最优的音符
+        score = evaluate_chord(chord, beat)
+        if score > best_score:
+            best_score = score
+            best_chord = chord
+    return best_chord
 
+# 评估音符的得分
+def evaluate_chord(chord, beat):
+    # 这里只是一个示例，随机返回一个得分
+    return random.random()
 
-# 定义MP3文件路径
-mp3_file = "music/爱的奉献.mp3"
+# 输出匹配的wav名称
+def print_matched_chord(chord):
+    print(f'Matched chord: {chord}')
 
-# 将MP3转换为WAV格式
-wav_file = convert_mp3_to_wav(mp3_file)
+# 合成wav文件
+def compose_wav(chords):
+    wav = AudioSegment.silent(duration=0)
+    for chord in chords:
+        chord_path = f'./music/chord/{chord}.wav'
+        wav_chord = AudioSegment.from_wav(chord_path)
+        wav += wav_chord
+    wav.export('./music/output.wav', format='wav')
 
-# 在后续代码中使用转换后的WAV文件进行处理
-# TODO: 在这里添加你对WAV文件的处理代码
+# 主函数
+def main():
+    # 读取wav文件
+    wav_file = './music/爱的奉献.wav'
+    params, frames = read_wav_file(wav_file)
 
-# 如果你想选择一个算法来将一个已有的MP3文件分割成小节，并将这些小节应用于另一个全新的MP3文件，而不使用GPT模型，下面是一个可能的替代算法：
-#
-# 1. 使用音频处理库（如Librosa）加载MP3文件，并将其转换为音频波形。
-#
-# 2. 使用音频特征提取方法（如短时傅里叶变换、梅尔频率倒谱系数等）提取每个小节的特征。
-#
-# 3. 对于已有的MP3文件，可以使用无监督的聚类算法（如K均值聚类）将提取的特征向量聚类为小节。这将有助于将相似的音频片段归到同一类别中。
-#
-# 4. 对于全新的MP3文件，将同样的特征提取方法应用到音频波形中，提取特征向量。
-#
-# 5. 将步骤4中提取的特征向量与步骤3中聚类得到的已有小节特征向量进行相似度匹配，找到与之最相似的小节。
-#
-# 6. 将已有小节的音频片段与找到的最相似小节对应的全新小节进行替换。
-#
-# 这个替代算法主要基于音频的特征提取和相似度匹配。你可以根据自己的需求和数据进行进一步的改进和调整，如使用其他特征提取方法或相似度计算方法。请注意，这种方法可能需要一定的音频处理和机器学习知识，以及相应的编程技能来实现。
-#
-# 需要提醒的是，使用现有算法进行音频小节匹配可能存在一定的误差和难题，因为音频的感知和语义信息在不同的乐曲和乐器中可能有很大的变化。因此，如果准确性对你非常重要，可能需要考虑使用更复杂的模型或算法来完成任务。
+    # 预测节拍
+    beat = predict_beat(params, frames)
 
-# MuT@b
+    # 匹配最优的音符
+    start_time = time.time()
+    chord = match_chord(beat)
+    end_time = time.time()
+
+    # 输出匹配的wav名称
+    print_matched_chord(chord)
+
+    # 判断执行时间
+    if end_time - start_time > 100:
+        print('Matching time exceeds 100 seconds. Exit.')
+        return
+
+    # 合成wav文件
+    compose_wav([chord] * beat)
+
+# 执行主函数
+if __name__ == '__main__':
+    main()
