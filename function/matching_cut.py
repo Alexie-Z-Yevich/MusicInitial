@@ -79,7 +79,7 @@ def audio_matching(target_file, b_directory):
             print(similarity)
             segment_similarities.append(similarity)
         similarities.append(segment_similarities)
-        if len(similarities) > 10:
+        if len(similarities) > 20:
             break
 
     # 选出每段中最相似的B中的音频

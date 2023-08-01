@@ -17,7 +17,8 @@ def play_wav(file_path, duration=1):
 
 
 # file_path = "./music/chord/Ab7.wav"
-file_path = "../music/爱的奉献.wav"
+# file_path = "../music/爱的奉献.wav"
+file_path = "../wav/split_2-3.wav"
 audio, sample_rate = read_wav(file_path)
 
 print("Audio signal:")
