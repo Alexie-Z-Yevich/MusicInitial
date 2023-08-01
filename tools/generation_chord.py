@@ -12,7 +12,7 @@ chords = {
 
 
 def generate_chord_sounds():
-    chord_dir = "./music/chord"
+    chord_dir = "../music/chord"
     os.makedirs(chord_dir, exist_ok=True)
 
     duration = 2.0

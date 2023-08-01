@@ -2,7 +2,7 @@ from pydub import AudioSegment
 from pydub.playback import play
 
 # 设置输入文件路径和文件名
-mp3_file_path = './sound/C2.mp3'
+mp3_file_path = '../sound/C2.mp3'
 
 # 使用pydub加载音频文件
 audio = AudioSegment.from_mp3(mp3_file_path)

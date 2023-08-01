@@ -22,7 +22,7 @@ def audio_matching(target_file, b_directory):
 
     # 将目标文件切分成1秒一段
     target_segments = []
-    duration = 2  # 切分后每段的时长
+    duration = 1  # 切分后每段的时长
     n_samples = len(target)
     n_segments = int(n_samples / (sr * duration))
     for i in range(n_segments):
@@ -31,34 +31,34 @@ def audio_matching(target_file, b_directory):
         segment = target[start:end]
         target_segments.append(segment)
 
-    # # 切分版本
-    # # 加载B集合中的文件
-    # b_files = get_wav_files(b_directory)
-    # b_segments = []
-    # b_filenames = []
-    # for b_file in b_files:
-    #     audio, _ = librosa.load(b_file, sr=sr)
-    #
-    #     # 将B集合中的文件切分成1秒一段
-    #     n_samples = len(audio)
-    #     n_segments = int(n_samples / (sr * duration))
-    #     for i in range(n_segments):
-    #         start = i * sr * duration
-    #         end = min(start + sr * duration, n_samples)
-    #         segment = audio[start:end]
-    #         b_segments.append(segment)
-    #         b_filenames.append(os.path.basename(b_file))
-
-    # # 不切分版本
+    # 切分版本
     # 加载B集合中的文件
     b_files = get_wav_files(b_directory)
     b_segments = []
     b_filenames = []
-
     for b_file in b_files:
         audio, _ = librosa.load(b_file, sr=sr)
-        b_segments.append(audio)
-        b_filenames.append(os.path.basename(b_file))
+
+        # 将B集合中的文件切分成1秒一段
+        n_samples = len(audio)
+        n_segments = int(n_samples / (sr * duration))
+        for i in range(n_segments):
+            start = i * sr * duration
+            end = min(start + sr * duration, n_samples)
+            segment = audio[start:end]
+            b_segments.append(segment)
+            b_filenames.append(os.path.basename(b_file))
+
+    # # 不切分版本
+    # # 加载B集合中的文件
+    # b_files = get_wav_files(b_directory)
+    # b_segments = []
+    # b_filenames = []
+    #
+    # for b_file in b_files:
+    #     audio, _ = librosa.load(b_file, sr=sr)
+    #     b_segments.append(audio)
+    #     b_filenames.append(os.path.basename(b_file))
 
     # 计算目标文件每段与B集合每段的相似度
     similarities = []
@@ -79,7 +79,7 @@ def audio_matching(target_file, b_directory):
             print(similarity)
             segment_similarities.append(similarity)
         similarities.append(segment_similarities)
-        if len(similarities) > 3:
+        if len(similarities) > 10:
             break
 
     # 选出每段中最相似的B中的音频

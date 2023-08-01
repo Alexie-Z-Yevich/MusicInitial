@@ -1,9 +1,13 @@
+import librosa
+import numpy as np
 import torch
 import torchaudio
 from transformers import Wav2Vec2Processor
 
+processor = Wav2Vec2Processor.from_pretrained("facebook/wav2vec2-base-960h")
+
 def similarCompare(target_audio, b_audio):
-    processor = Wav2Vec2Processor.from_pretrained("facebook/wav2vec2-base-960h")
+
 
     # 预处理音频并指定sampling_rate
     target_input = processor(target_audio, return_tensors="pt", padding=True, sampling_rate=16000)
@@ -14,4 +18,4 @@ def similarCompare(target_audio, b_audio):
     b_embedding = b_input.input_values.squeeze(0).mean(dim=0).unsqueeze(0)
     similarity = torch.cosine_similarity(target_embedding, b_embedding).item()
 
-    return similarity
+    return abs(similarity)

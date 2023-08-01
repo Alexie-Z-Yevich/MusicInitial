@@ -15,7 +15,7 @@ fret_distances = [
 ]
 
 # 定义父目录路径
-parent_dir = "./music/"
+parent_dir = "../music/"
 
 def play_note(note, file_path):
     # 使用 sounddevice 播放音频
