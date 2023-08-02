@@ -7,7 +7,8 @@ import soundfile as sf
 import sounddevice as sd
 import scipy.spatial.distance as dist
 
-from function.similarCompare import similarCompare
+from function.similar_wav2vec2 import similar_wav2vec2
+from function.similar_CNN import similar_CNN
 
 
 def get_wav_files(directory):
@@ -75,7 +76,8 @@ def audio_matching(target_file, b_directory):
             b_mfcc = np.pad(b_mfcc, ((0, 0), (0, max_frames - b_mfcc.shape[1])), mode='constant')
 
             # 计算MFCC特征之间的距离
-            similarity = similarCompare(target_mfcc, b_mfcc)
+            # similarity = similar_wav2vec2(target_mfcc, b_mfcc)
+            similarity = similar_CNN(target_mfcc, b_mfcc)
             print(similarity)
             segment_similarities.append(similarity)
         similarities.append(segment_similarities)
@@ -98,7 +100,7 @@ def play_wav(file_path, duration=1):
     sd.wait()  # 等待音频播放完毕
 
 # 设置目标文件和B集合所在的目录
-target_file = "../music/爱的奉献.wav"
+target_file = "../music/晴天.wav"
 b_directory = "../music/chord"
 
 # 进行音频匹配
@@ -107,4 +109,4 @@ matched_files = audio_matching(target_file, b_directory)
 # 打印匹配结果
 for i, matched_file in enumerate(matched_files):
     print(f"第 {i + 1} 秒: 匹配到文件 {matched_file}")
-    play_wav(matched_file, 2)
+    play_wav(matched_file, 1)

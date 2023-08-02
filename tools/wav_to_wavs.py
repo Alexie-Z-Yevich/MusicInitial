@@ -25,7 +25,7 @@ def split_wav(input_file, output_folder, duration, max_duration):
         start_time = end_time
 
 # 测试例子
-input_file = "../music/爱的奉献.wav"  # 输入的wav文件名
+input_file = "../music/晴天.wav"  # 输入的wav文件名
 output_folder = "../wav"  # 输出的文件夹名
 duration = 1  # 拆分的时长（秒）
 max_duration = 20  # 最大切割长度（秒）

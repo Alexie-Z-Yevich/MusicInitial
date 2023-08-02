@@ -6,7 +6,7 @@ from transformers import Wav2Vec2Processor
 
 processor = Wav2Vec2Processor.from_pretrained("facebook/wav2vec2-base-960h")
 
-def similarCompare(target_audio, b_audio):
+def similar_wav2vec2(target_audio, b_audio):
 
 
     # 预处理音频并指定sampling_rate

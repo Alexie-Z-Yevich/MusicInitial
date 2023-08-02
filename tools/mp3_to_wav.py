@@ -2,10 +2,10 @@ import subprocess
 from moviepy.editor import AudioFileClip
 
 # 设置输入文件路径和文件名
-mp3_file_path = '../music/爱的奉献.mp3'
+mp3_file_path = '../music/晴天.mp3'
 
 # 设置输出文件路径和文件名
-wav_file_path = '../music/爱的奉献.wav'
+wav_file_path = '../music/晴天.wav'
 
 # 使用moviepy加载音频文件
 audio = AudioFileClip(mp3_file_path)
