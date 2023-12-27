@@ -6,9 +6,8 @@ from transformers import Wav2Vec2Processor
 
 processor = Wav2Vec2Processor.from_pretrained("facebook/wav2vec2-base-960h")
 
+
 def similar_wav2vec2(target_audio, b_audio):
-
-
     # 预处理音频并指定sampling_rate
     target_input = processor(target_audio, return_tensors="pt", padding=True, sampling_rate=16000)
     b_input = processor(b_audio, return_tensors="pt", padding=True, sampling_rate=16000)

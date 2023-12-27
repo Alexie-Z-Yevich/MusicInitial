@@ -7,7 +7,7 @@ import soundfile as sf
 import sounddevice as sd
 import scipy.spatial.distance as dist
 
-from function.similar_wav2vec2 import similar_wav2vec2
+# from function.similar_wav2vec2 import similar_wav2vec2
 from function.similar_CNN import similar_CNN
 
 
@@ -99,14 +99,19 @@ def play_wav(file_path, duration=1):
     sd.play(audio_signal, sample_rate)  # 使用 sounddevice 库播放修剪后的音频信号
     sd.wait()  # 等待音频播放完毕
 
-# 设置目标文件和B集合所在的目录
-target_file = "../music/晴天.wav"
-b_directory = "../music/chord"
 
-# 进行音频匹配
-matched_files = audio_matching(target_file, b_directory)
+def main():
+    # 进行音频匹配
+    matched_files = audio_matching(target_file, b_directory)
 
-# 打印匹配结果
-for i, matched_file in enumerate(matched_files):
-    print(f"第 {i + 1} 秒: 匹配到文件 {matched_file}")
-    play_wav(matched_file, 1)
+    # 打印匹配结果
+    for i, matched_file in enumerate(matched_files):
+        print(f"第 {i + 1} 秒: 匹配到文件 {matched_file}")
+        play_wav(matched_file, 1)
+
+
+if __name__ == '__main__':
+    # 设置目标文件和B集合所在的目录
+    target_file = "../music/晴天.wav"
+    b_directory = "../music/chord"
+    main()
