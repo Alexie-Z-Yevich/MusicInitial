@@ -1,5 +1,6 @@
 import librosa
 
+
 def predict_beat(wav_file):
     # 读取音频文件
     audio, sr = librosa.load(wav_file)
@@ -16,6 +17,7 @@ def predict_beat(wav_file):
 
     return beats_per_bar, duration_per_beat
 
+
 # 主函数
 def main():
     # 输入音频文件路径
@@ -26,6 +28,7 @@ def main():
 
     print(f'Beats per bar: {beats_per_bar}')
     print(f'Duration per beat: {duration_per_beat} seconds')
+
 
 if __name__ == '__main__':
     main()

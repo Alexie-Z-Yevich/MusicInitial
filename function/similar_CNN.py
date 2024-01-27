@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 
+
 class YourCNN(nn.Module):
     def __init__(self, num_features):
         super(YourCNN, self).__init__()
@@ -17,6 +18,7 @@ class YourCNN(nn.Module):
         x = x.view(x.size(0), -1)
         x = torch.sigmoid(self.fc(x))
         return x
+
 
 def similar_CNN(target_mfcc, b_mfcc):
     # 创建模型实例
